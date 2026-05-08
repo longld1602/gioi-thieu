@@ -111,7 +111,6 @@
         radial-gradient(ellipse 50% 70% at 10% 80%, rgba(26,58,143,.4) 0%, transparent 65%);
       pointer-events: none;
     }
-    /* floating circles */
     .hero-orb {
       position: absolute;
       border-radius: 50%;
@@ -191,7 +190,6 @@
     }
     .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,.08); }
 
-    /* hero card */
     .hero-card {
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.1);
@@ -908,7 +906,7 @@
         <h2>Hệ thống luyện thi <span class="gold">tiên phong</span> — nền tảng để thầy cô tự tin giới thiệu</h2>
         <p>HSA Education là đơn vị tiên phong và dẫn đầu ôn luyện ĐGNL, ĐGTD từ năm 2015 — đạt Sao Vàng Thương Hiệu Quốc Gia 2024, Top 10 Thương Hiệu Dẫn Đầu Việt Nam 2025, được VTV3 đưa tin. Thầy cô giới thiệu học sinh đến HSA là giới thiệu đến nơi đáng tin nhất.</p>
         <ul class="about-list">
-          <li>Tiên phong và duy nhất triển khai đồng bộ giải pháp ĐGNL & ĐGTD tại Việt Nam</li>
+          <li>Tiên phong và duy nhất triển khai đồng bộ giải pháp ĐGNL &amp; ĐGTD tại Việt Nam</li>
           <li>50.000+ học viên — 1.000+ HS đạt 100+ điểm HSA mỗi năm</li>
           <li>20 thầy cô tác giả sách NXB — giảng dạy trực tiếp, hỗ trợ tận tâm</li>
           <li>Hệ thống thi thử mô phỏng đề thật, video bài giảng xem không giới hạn</li>
@@ -1107,7 +1105,7 @@
       <div class="footer-links">
         <a href="#how-it-works">Cách hoạt động</a>
         <a href="#register">Đăng ký</a>
-        <a href="mailto:info@hsa.edu.vn">Liên hệ</a>
+        <a href="mailto:hsaeducation.jsc@gmail.com">Liên hệ</a>
       </div>
     </div>
     <p class="footer-copy">© 2025 HSA Education. Tất cả quyền được bảo lưu.</p>
@@ -1163,15 +1161,42 @@
   });
 
   // ── FORM SUBMIT ──
-  document.getElementById('ambassadorForm').addEventListener('submit', function(e) {
+  // 👇 Dán URL Web App của bạn vào đây sau khi deploy Apps Script
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8xNXpDF2ZXhT9HnrIkITSNGPb9ClUwCREKkltwoRCKb8MAXBh1mxzyGkc2B1MjJ7x/exec';
+
+  document.getElementById('ambassadorForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const btn = this.querySelector('.submit-btn');
-    btn.textContent = '⏳ Đang xử lý...';
+    const form = this;
+    const btn  = form.querySelector('.submit-btn');
+
+    const data = {
+      fullname: form.querySelector('[name="fullname"]').value.trim(),
+      phone:    form.querySelector('[name="phone"]').value.trim(),
+      email:    form.querySelector('[name="email"]').value.trim(),
+    };
+
+    btn.textContent = '⏳ Đang gửi...';
     btn.disabled = true;
-    setTimeout(() => {
-      this.style.display = 'none';
-      document.getElementById('formSuccess').style.display = 'block';
-    }, 1200);
+
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method:  'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body:    JSON.stringify(data),
+      });
+      const json = await res.json();
+
+      if (json.success) {
+        form.style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      } else {
+        throw new Error(json.message || 'Lỗi không xác định');
+      }
+    } catch (err) {
+      btn.textContent = '🚀 Đăng ký Đại sứ ngay';
+      btn.disabled = false;
+      alert('Có lỗi xảy ra: ' + err.message + '\nVui lòng thử lại hoặc liên hệ HSA qua Zalo.');
+    }
   });
 
   // ── SMOOTH SCROLL ──
