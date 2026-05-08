@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chương Trình Đại Sứ Thương Hiệu – HSA Education</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0d1f4e;
+      --navy2:  #132565;
+      --blue:   #1a3a8f;
+      --gold:   #f5a623;
+      --gold2:  #ffbe45;
+      --white:  #ffffff;
+      --light:  #f0f4ff;
+      --gray:   #6b7280;
+      --text:   #1f2937;
+      --radius: 14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Be Vietnam Pro', sans-serif;
+      color: var(--text);
+      background: #fff;
+      overflow-x: hidden;
+    }
+
+    /* ─── UTILITY ─── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .gold      { color: var(--gold); }
+    .navy      { color: var(--navy); }
+    .tag {
+      display: inline-block;
+      background: rgba(245,166,35,.15);
+      color: var(--gold);
+      border: 1px solid rgba(245,166,35,.4);
+      padding: 5px 16px;
+      border-radius: 50px;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    /* ─── SCROLL ANIMATIONS ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left  { opacity: 0; transform: translateX(-40px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(40px);  transition: opacity .65s ease, transform .65s ease; }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* ─── NAVBAR ─── */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(13,31,78,.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 14px 0;
+      transition: padding .3s;
+    }
+    .navbar .container {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 10px; }
+    .logo-img { height: 38px; width: auto; object-fit: contain; display: block; }
+    .logo-img-footer { height: 38px; width: auto; object-fit: contain; display: block; }
+    .logo-name {
+      font-size: 1.15rem; font-weight: 800;
+      color: #f5a623;
+      letter-spacing: -.2px;
+      line-height: 1;
+    }
+    .nav-cta {
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: .88rem;
+      padding: 10px 22px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 14px rgba(245,166,35,.4);
+      white-space: nowrap;
+    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,166,35,.55); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(145deg, var(--navy) 0%, #0a1840 50%, #142060 100%);
+      display: flex; align-items: center; padding: 120px 0 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 40%, rgba(245,166,35,.12) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 70% at 10% 80%, rgba(26,58,143,.4) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    /* floating circles */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      animation: floatOrb 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .orb1 { width: 320px; height: 320px; background: rgba(245,166,35,.08); top: -80px; right: 5%; }
+    .orb2 { width: 240px; height: 240px; background: rgba(26,58,143,.25); bottom: 5%; left: -60px; animation-delay: -4s; }
+    @keyframes floatOrb {
+      0%,100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-24px) scale(1.06); }
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+      position: relative;
+    }
+    .hero-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(245,166,35,.15);
+      border: 1px solid rgba(245,166,35,.35);
+      color: var(--gold2);
+      padding: 6px 16px; border-radius: 50px;
+      font-size: .8rem; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+    .hero-label::before {
+      content: '';
+      display: inline-block; width: 7px; height: 7px;
+      background: var(--gold); border-radius: 50%;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .4; transform: scale(1.5); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.18;
+      margin-bottom: 20px;
+    }
+    .hero h1 em { font-style: normal; color: var(--gold); }
+    .hero-desc {
+      color: rgba(255,255,255,.72);
+      font-size: 1.05rem;
+      line-height: 1.75;
+      margin-bottom: 36px;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 800; font-size: 1rem;
+      padding: 15px 32px; border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 6px 24px rgba(245,166,35,.5);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(245,166,35,.6); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent;
+      color: #fff;
+      font-weight: 700; font-size: 1rem;
+      padding: 15px 32px; border-radius: 50px;
+      text-decoration: none;
+      border: 2px solid rgba(255,255,255,.3);
+      transition: border-color .25s, background .25s;
+    }
+    .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+
+    /* hero card */
+    .hero-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 24px;
+      padding: 36px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: relative;
+    }
+    .hero-card-title {
+      color: #fff; font-weight: 700; font-size: 1.1rem; margin-bottom: 24px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-card-title span {
+      width: 34px; height: 34px;
+      background: var(--gold); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .benefit-row {
+      display: flex; align-items: flex-start; gap: 14px;
+      margin-bottom: 18px;
+    }
+    .benefit-row:last-child { margin-bottom: 0; }
+    .benefit-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      background: rgba(245,166,35,.15);
+      border: 1px solid rgba(245,166,35,.3);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem;
+    }
+    .benefit-text strong {
+      display: block; color: #fff; font-size: .95rem; margin-bottom: 2px;
+    }
+    .benefit-text p { color: rgba(255,255,255,.55); font-size: .82rem; line-height: 1.5; }
+    .commission-highlight {
+      margin-top: 24px;
+      background: linear-gradient(135deg, rgba(245,166,35,.2), rgba(245,166,35,.08));
+      border: 1px solid rgba(245,166,35,.4);
+      border-radius: 14px; padding: 18px 20px;
+      text-align: center;
+    }
+    .commission-highlight .num {
+      font-size: 2.6rem; font-weight: 900; color: var(--gold);
+      line-height: 1; display: block;
+    }
+    .commission-highlight .label { color: rgba(255,255,255,.7); font-size: .85rem; margin-top: 4px; }
+
+    /* ─── STATS BAR ─── */
+    .stats-bar {
+      background: var(--navy);
+      padding: 28px 0;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 16px 20px;
+      border-right: 1px solid rgba(255,255,255,.1);
+      position: relative;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: 2rem; font-weight: 900; color: var(--gold);
+      line-height: 1; display: block;
+    }
+    .stat-label { color: rgba(255,255,255,.6); font-size: .82rem; margin-top: 6px; }
+
+    /* ─── SECTION base ─── */
+    section { padding: 88px 0; }
+    .section-header { text-align: center; margin-bottom: 56px; }
+    .section-header h2 {
+      font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+      font-weight: 800; color: var(--navy);
+      line-height: 1.25; margin-bottom: 14px;
+    }
+    .section-header p {
+      color: var(--gray); font-size: 1.05rem;
+      line-height: 1.7; max-width: 580px; margin: 0 auto;
+    }
+    .divider {
+      width: 56px; height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      border-radius: 2px;
+      margin: 14px auto 0;
+    }
+
+    /* ─── WHY JOIN ─── */
+    .why-bg { background: var(--light); }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .why-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      box-shadow: 0 2px 20px rgba(0,0,0,.06);
+      border: 1px solid rgba(0,0,0,.05);
+      transition: transform .3s, box-shadow .3s;
+    }
+    .why-card:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(0,0,0,.1); }
+    .why-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin-bottom: 20px;
+      box-shadow: 0 6px 18px rgba(245,166,35,.35);
+    }
+    .why-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+    .why-card p  { color: var(--gray); font-size: .9rem; line-height: 1.7; }
+
+    /* ─── HOW IT WORKS ─── */
+    .steps-wrap {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .steps-wrap::before {
+      content: '';
+      position: absolute;
+      top: 42px; left: 12.5%; right: 12.5%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2), var(--gold));
+      z-index: 0;
+    }
+    .step {
+      text-align: center;
+      padding: 0 16px;
+      position: relative; z-index: 1;
+    }
+    .step-num {
+      width: 84px; height: 84px; margin: 0 auto 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      border: 3px solid var(--gold);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-weight: 900; color: var(--gold);
+      font-size: 1.4rem;
+      box-shadow: 0 6px 20px rgba(13,31,78,.25);
+      transition: transform .3s;
+    }
+    .step:hover .step-num { transform: scale(1.1); }
+    .step-emoji { font-size: 1.5rem; line-height: 1; }
+    .step h4 { font-size: .95rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .step p  { color: var(--gray); font-size: .83rem; line-height: 1.6; }
+
+    /* ─── COMMISSION ─── */
+    .commission-bg {
+      background: linear-gradient(135deg, var(--navy) 0%, #0a1840 100%);
+      position: relative; overflow: hidden;
+    }
+    .commission-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(245,166,35,.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .commission-bg .section-header h2 { color: #fff; }
+    .commission-bg .section-header p  { color: rgba(255,255,255,.65); }
+    .commission-bg .divider { background: linear-gradient(90deg, var(--gold), var(--gold2)); }
+
+    .commission-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .commission-card {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px; padding: 36px;
+      backdrop-filter: blur(10px);
+    }
+    .commission-card h3 {
+      color: var(--gold2); font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 22px; display: flex; align-items: center; gap: 10px;
+    }
+    .commission-card h3 span { font-size: 1.4rem; }
+    .commission-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .commission-row:last-child { border-bottom: none; }
+    .commission-row .key  { color: rgba(255,255,255,.65); font-size: .9rem; }
+    .commission-row .val  { color: #fff; font-weight: 700; font-size: .95rem; }
+    .commission-row .val.highlight { color: var(--gold); font-size: 1.1rem; }
+
+    .big-percent {
+      text-align: center;
+      padding: 40px 0 24px;
+    }
+    .big-percent .pct {
+      font-size: 5rem; font-weight: 900;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+    .big-percent .pct-label {
+      color: rgba(255,255,255,.7); font-size: .95rem; margin-top: 8px;
+    }
+
+    /* ─── ABOUT HSA ─── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .about-text h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800; color: var(--navy);
+      line-height: 1.25; margin-bottom: 16px;
+    }
+    .about-text p {
+      color: var(--gray); line-height: 1.75; margin-bottom: 28px; font-size: .97rem;
+    }
+    .about-list { list-style: none; }
+    .about-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      margin-bottom: 14px; font-size: .93rem; color: var(--text);
+    }
+    .about-list li::before {
+      content: '✓';
+      flex-shrink: 0;
+      width: 24px; height: 24px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: var(--navy);
+      font-weight: 900; font-size: .8rem;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+    .about-visual {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .about-stat-card {
+      background: var(--light);
+      border: 1px solid rgba(26,58,143,.1);
+      border-radius: var(--radius);
+      padding: 24px 20px; text-align: center;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .about-stat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+    .about-stat-card.featured {
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      border-color: transparent; grid-column: span 2;
+    }
+    .about-stat-card .n { font-size: 2.2rem; font-weight: 900; color: var(--navy); line-height: 1; }
+    .about-stat-card.featured .n { color: var(--gold); }
+    .about-stat-card .l { color: var(--gray); font-size: .82rem; margin-top: 6px; }
+    .about-stat-card.featured .l { color: rgba(255,255,255,.65); }
+
+    /* ─── TESTIMONIALS ─── */
+    .testi-bg { background: var(--light); }
+    .testi-grid {
+      column-count: 3; column-gap: 20px;
+    }
+    @media (max-width: 900px) { .testi-grid { column-count: 2; } }
+    @media (max-width: 560px) { .testi-grid { column-count: 1; } }
+    .testi-card {
+      break-inside: avoid;
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.06);
+      border: 1px solid rgba(0,0,0,.06);
+      border-top: 3px solid var(--gold);
+      margin-bottom: 20px;
+      transition: transform .3s;
+    }
+    .testi-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,.1); }
+    .testi-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .testi-avatar {
+      width: 50px; height: 50px; flex-shrink: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-weight: 800; font-size: 1rem;
+      overflow: hidden;
+    }
+    .testi-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .testi-name { font-weight: 700; color: var(--navy); font-size: .9rem; display: block; }
+    .testi-school { color: var(--gray); font-size: .78rem; }
+    .testi-score {
+      display: inline-block;
+      background: linear-gradient(135deg, #FBBF24, #F59E0B);
+      color: #78350F; font-weight: 800; font-size: .78rem;
+      padding: 4px 10px; border-radius: 50px;
+      margin: 6px 0 8px;
+    }
+    .testi-breakdown {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;
+    }
+    .testi-breakdown span {
+      background: #EEF2FF; color: var(--navy); font-size: .72rem;
+      font-weight: 700; padding: 3px 8px; border-radius: 6px;
+    }
+    .testi-stars { color: #F59E0B; font-size: 1rem; letter-spacing: 2px; margin-bottom: 8px; }
+    .testi-text { color: var(--text); font-size: .88rem; line-height: 1.75; font-style: italic; }
+
+    /* ─── REGISTER FORM ─── */
+    .form-bg {
+      background: linear-gradient(135deg, #0d1f4e 0%, #1a3a8f 100%);
+      position: relative; overflow: hidden;
+    }
+    .form-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 0% 50%, rgba(245,166,35,.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 100% 50%, rgba(26,58,143,.3) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .form-bg .section-header h2 { color: #fff; }
+    .form-bg .section-header p  { color: rgba(255,255,255,.65); }
+    .form-bg .divider            { background: linear-gradient(90deg, var(--gold), var(--gold2)); }
+
+    .form-wrap {
+      max-width: 560px; margin: 0 auto;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 24px; padding: 44px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      position: relative;
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      color: rgba(255,255,255,.8); font-size: .88rem; font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .form-group label .req { color: var(--gold); margin-left: 2px; }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 10px;
+      padding: 13px 16px;
+      color: #fff; font-size: .95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .25s, background .25s;
+      -webkit-appearance: none;
+    }
+    .form-group input::placeholder { color: rgba(255,255,255,.35); }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--gold);
+      background: rgba(255,255,255,.14);
+    }
+    .form-group select option { background: var(--navy); color: #fff; }
+
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: var(--navy);
+      font-weight: 800; font-size: 1rem;
+      padding: 16px; border-radius: 50px;
+      border: none; cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 6px 24px rgba(245,166,35,.45);
+      transition: transform .25s, box-shadow .25s;
+      letter-spacing: .01em;
+    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(245,166,35,.6); }
+    .form-note {
+      text-align: center;
+      color: rgba(255,255,255,.4); font-size: .78rem;
+      margin-top: 14px;
+    }
+    .form-success {
+      display: none;
+      text-align: center; padding: 20px;
+    }
+    .form-success .check { font-size: 3rem; margin-bottom: 12px; }
+    .form-success h4 { color: var(--gold2); font-size: 1.2rem; margin-bottom: 8px; }
+    .form-success p  { color: rgba(255,255,255,.65); font-size: .9rem; line-height: 1.6; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--navy);
+      padding: 44px 0 24px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .footer-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 24px; padding-bottom: 28px;
+      border-bottom: 1px solid rgba(255,255,255,.08); margin-bottom: 20px;
+    }
+    .footer-brand .logo-img-footer { height: 44px; }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { color: rgba(255,255,255,.5); font-size: .85rem; text-decoration: none; transition: color .2s; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy { color: rgba(255,255,255,.3); font-size: .8rem; text-align: center; }
+
+    /* ─── FLOATING CTA ─── */
+    .float-cta {
+      position: fixed; bottom: 28px; right: 28px; z-index: 99;
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 800; font-size: .9rem;
+      padding: 14px 24px; border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 6px 24px rgba(245,166,35,.55);
+      transition: transform .25s, box-shadow .25s, opacity .4s;
+      display: flex; align-items: center; gap: 8px;
+      opacity: 0; pointer-events: none;
+    }
+    .float-cta.show { opacity: 1; pointer-events: auto; }
+    .float-cta:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 10px 32px rgba(245,166,35,.65); }
+    .float-cta .arrow { transition: transform .2s; }
+    .float-cta:hover .arrow { transform: translateX(3px); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+      .hero-card { display: none; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+      .why-grid { grid-template-columns: 1fr 1fr; }
+      .steps-wrap { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .steps-wrap::before { display: none; }
+      .commission-cols { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 64px 0; }
+      .hero h1 { font-size: 1.85rem; }
+      .why-grid  { grid-template-columns: 1fr; }
+      .steps-wrap { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-visual { grid-template-columns: 1fr 1fr; }
+      .form-wrap { padding: 28px 20px; }
+      .float-cta { bottom: 16px; right: 16px; font-size: .82rem; padding: 12px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container">
+    <div class="logo-wrap">
+      <img src="https://i.ibb.co/n83B0L5t/hsa-logo-png.png" alt="HSA Education" class="logo-img" />
+      <span class="logo-name">HSA Education</span>
+    </div>
+    <a href="#register" class="nav-cta">Đăng ký ngay →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="container">
+    <div class="hero-grid">
+      <!-- LEFT -->
+      <div class="reveal-left">
+        <div class="hero-label">✦ Chương Trình Dành Riêng Cho Các Thầy Cô HSA Education</div>
+        <h1>
+          Biến <em>uy tín giảng dạy</em><br>
+          thành <em>thu nhập thụ động</em>
+        </h1>
+        <p class="hero-desc">
+          Thầy cô đang có trong tay điều quý giá nhất: uy tín chuyên môn, tệp học sinh tin tưởng và thành tích giảng dạy thực tế.
+          Chương trình Đại sứ HSA giúp thầy cô chuyển hóa tất cả điều đó thành <strong style="color:#ffbe45;">thu nhập bền vững</strong> — không cần làm thêm, chỉ cần giới thiệu.
+        </p>
+        <div class="hero-btns">
+          <a href="#register" class="btn-primary">
+            🚀 Đăng ký Đại sứ <span class="arrow">→</span>
+          </a>
+          <a href="#how-it-works" class="btn-outline">
+            Xem cách hoạt động ↓
+          </a>
+        </div>
+      </div>
+      <!-- RIGHT CARD -->
+      <div class="reveal-right" style="transition-delay:.15s">
+        <div class="hero-card">
+          <div class="hero-card-title">
+            <span>🎁</span> Quyền lợi của Đại sứ HSA
+          </div>
+          <div class="benefit-row">
+            <div class="benefit-icon">💰</div>
+            <div class="benefit-text">
+              <strong>Hoa hồng 20% học phí</strong>
+              <p>Mỗi học sinh đăng ký thành công qua link của thầy cô</p>
+            </div>
+          </div>
+          <div class="benefit-row">
+            <div class="benefit-icon">🔗</div>
+            <div class="benefit-text">
+              <strong>Mã giới thiệu cá nhân</strong>
+              <p>Tự động ghi nhận mọi lượt đăng ký — không cần theo dõi thủ công</p>
+            </div>
+          </div>
+          <div class="benefit-row">
+            <div class="benefit-icon">📅</div>
+            <div class="benefit-text">
+              <strong>Thanh toán minh bạch</strong>
+              <p>Đối soát ngày 1–5, thanh toán ngày 10 hàng tháng</p>
+            </div>
+          </div>
+          <div class="benefit-row">
+            <div class="benefit-icon">🏆</div>
+            <div class="benefit-text">
+              <strong>Danh hiệu Đại sứ chính thức</strong>
+              <p>Tăng uy tín cá nhân, hợp tác lâu dài cùng HSA</p>
+            </div>
+          </div>
+          <div class="commission-highlight">
+            <span class="num">20%</span>
+            <div class="label">hoa hồng trên mỗi học phí học sinh đăng ký thành công</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal" style="transition-delay:.05s">
+        <span class="stat-num counter" data-target="50000">0</span><span class="stat-num gold">+</span>
+        <div class="stat-label">Học sinh theo học</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:.1s">
+        <span class="stat-num counter" data-target="20">0</span><span class="stat-num gold">%</span>
+        <div class="stat-label">Hoa hồng trên học phí</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:.15s">
+        <span class="stat-num counter" data-target="10">0</span><span class="stat-num gold">+</span>
+        <div class="stat-label">Năm kinh nghiệm luyện thi</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:.2s">
+        <span class="stat-num gold">100</span><span class="stat-num gold">%</span>
+        <div class="stat-label">Tự động ghi nhận qua link</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY JOIN -->
+<section class="why-bg">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag">✦ Lý do tham gia</div>
+      <h2>Thầy cô <span class="gold">sẵn có tất cả</span><br>những gì cần thiết</h2>
+      <div class="divider"></div>
+      <p>Không cần bắt đầu từ đầu — thầy cô đang sở hữu những lợi thế mà nhiều người mơ ước.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal" style="transition-delay:.05s">
+        <div class="why-icon">🎓</div>
+        <h3>Uy tín từ chính HSA</h3>
+        <p>Thầy cô đang trực tiếp giảng dạy tại HSA — uy tín thương hiệu 10+ năm đã được xây dựng sẵn. Học sinh tin thầy cô, thầy cô giới thiệu HSA, đó là lời khuyên đáng giá nhất.</p>
+      </div>
+      <div class="why-card reveal" style="transition-delay:.1s">
+        <div class="why-icon">👨‍🎓</div>
+        <h3>Tệp học sinh sẵn có</h3>
+        <p>Học sinh đang theo học, phụ huynh đang quan tâm, học sinh tại các trường THPT thầy cô công tác — đây là kênh giới thiệu tự nhiên và hiệu quả nhất.</p>
+      </div>
+      <div class="why-card reveal" style="transition-delay:.15s">
+        <div class="why-icon">🏅</div>
+        <h3>Thành tích làm bằng chứng</h3>
+        <p>Nhiều học sinh báo điểm cao, đỗ trường top — thành tích giảng dạy thực tế là lý do mạnh mẽ nhất để học sinh mới tin tưởng và đăng ký.</p>
+      </div>
+      <div class="why-card reveal" style="transition-delay:.2s">
+        <div class="why-icon">📲</div>
+        <h3>Cực kỳ đơn giản</h3>
+        <p>Chỉ cần chia sẻ link/mã giới thiệu cá nhân. Hệ thống tự động ghi nhận. Thầy cô không cần làm gì thêm — thu nhập tự chạy.</p>
+      </div>
+      <div class="why-card reveal" style="transition-delay:.25s">
+        <div class="why-icon">💳</div>
+        <h3>Thu nhập minh bạch</h3>
+        <p>Đối soát ngày 1–5, nhận tiền ngày 10 tháng tiếp theo. Báo cáo rõ ràng, thanh toán đúng hẹn — không mơ hồ, không chờ đợi lâu.</p>
+      </div>
+      <div class="why-card reveal" style="transition-delay:.3s">
+        <div class="why-icon">🤝</div>
+        <h3>Gắn kết lâu dài</h3>
+        <p>Trở thành Đại sứ chính thức của HSA — cộng tác bền vững, cùng phát triển thương hiệu cá nhân và thu nhập theo thời gian.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag">✦ Quy trình</div>
+      <h2>Chỉ <span class="gold">4 bước đơn giản</span><br>để bắt đầu nhận hoa hồng</h2>
+      <div class="divider"></div>
+      <p>Từ đăng ký đến nhận tiền — quy trình được thiết kế để tối giản công sức của thầy cô.</p>
+    </div>
+    <div class="steps-wrap">
+      <div class="step reveal" style="transition-delay:.05s">
+        <div class="step-num"><span class="step-emoji">📝</span></div>
+        <h4>Đăng ký tham gia</h4>
+        <p>Điền form đăng ký bên dưới. Đội ngũ HSA sẽ liên hệ xác nhận trong 24h làm việc.</p>
+      </div>
+      <div class="step reveal" style="transition-delay:.12s">
+        <div class="step-num"><span class="step-emoji">🔑</span></div>
+        <h4>Nhận mã giới thiệu</h4>
+        <p>Mỗi thầy cô được cấp 1 mã/link duy nhất để theo dõi tất cả lượt đăng ký từ bạn.</p>
+      </div>
+      <div class="step reveal" style="transition-delay:.19s">
+        <div class="step-num"><span class="step-emoji">📣</span></div>
+        <h4>Giới thiệu học sinh</h4>
+        <p>Chia sẻ link qua Zalo, Facebook, nhắn tin trực tiếp — bất cứ kênh nào thầy cô muốn.</p>
+      </div>
+      <div class="step reveal" style="transition-delay:.26s">
+        <div class="step-num"><span class="step-emoji">💰</span></div>
+        <h4>Nhận hoa hồng</h4>
+        <p>Đối soát ngày 1–5, thanh toán ngày 10 hàng tháng. Tự động, minh bạch, đúng hẹn.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMISSION DETAILS -->
+<section class="commission-bg">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag">✦ Chính sách hoa hồng</div>
+      <h2 style="color:#fff;">Chính sách <span class="gold">rõ ràng</span>, thanh toán <span class="gold">đúng hẹn</span></h2>
+      <div class="divider"></div>
+      <p style="color:rgba(255,255,255,.65);">Không mơ hồ, không chờ đợi — mọi thứ được định nghĩa cụ thể từ đầu.</p>
+    </div>
+    <div class="commission-cols">
+      <div class="reveal-left">
+        <div class="big-percent">
+          <div class="pct">20%</div>
+          <div class="pct-label">hoa hồng trên học phí mỗi học sinh đăng ký thành công</div>
+        </div>
+        <div class="commission-card">
+          <h3><span>📋</span> Chi tiết chính sách</h3>
+          <div class="commission-row">
+            <span class="key">Tỷ lệ hoa hồng</span>
+            <span class="val highlight">20% / học phí</span>
+          </div>
+          <div class="commission-row">
+            <span class="key">Điều kiện ghi nhận</span>
+            <span class="val">Học sinh đăng ký qua link/mã của thầy cô</span>
+          </div>
+          <div class="commission-row">
+            <span class="key">Kỳ đối soát</span>
+            <span class="val">Ngày 1 – 5 hàng tháng</span>
+          </div>
+          <div class="commission-row">
+            <span class="key">Ngày thanh toán</span>
+            <span class="val">Ngày 10 tháng tiếp theo</span>
+          </div>
+          <div class="commission-row">
+            <span class="key">Phương thức ghi nhận</span>
+            <span class="val">Tự động qua link cá nhân</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal-right" style="transition-delay:.1s">
+        <div class="commission-card">
+          <h3><span>💡</span> Ví dụ thực tế</h3>
+          <div style="margin-bottom:20px;padding:20px;background:rgba(245,166,35,.1);border-radius:12px;border:1px solid rgba(245,166,35,.25);">
+            <p style="color:rgba(255,255,255,.6);font-size:.82rem;margin-bottom:14px;">Giả sử học phí 1 khóa học = <strong style="color:#fff;">3,900,000đ</strong></p>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+              <span style="color:rgba(255,255,255,.65);font-size:.88rem;">1 học sinh đăng ký</span>
+              <span style="color:var(--gold);font-weight:700;">780,000đ</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+              <span style="color:rgba(255,255,255,.65);font-size:.88rem;">5 học sinh / tháng</span>
+              <span style="color:var(--gold);font-weight:700;">3,900,000đ</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid rgba(245,166,35,.2);">
+              <span style="color:rgba(255,255,255,.8);font-size:.9rem;font-weight:700;">10 học sinh / tháng</span>
+              <span style="color:var(--gold2);font-weight:900;font-size:1.05rem;">7,800,000đ</span>
+            </div>
+          </div>
+          <p style="color:rgba(255,255,255,.55);font-size:.82rem;line-height:1.65;margin-bottom:20px;">Con số trên chỉ là ví dụ tham khảo. Thu nhập thực tế phụ thuộc vào học phí từng khóa học và số lượng học sinh đăng ký thành công qua link của thầy cô.</p>
+          <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:20px;">
+            <p style="color:var(--gold2);font-weight:700;font-size:.9rem;margin-bottom:10px;">🎯 Cam kết của HSA:</p>
+            <ul style="list-style:none;padding:0;">
+              <li style="color:rgba(255,255,255,.65);font-size:.85rem;margin-bottom:8px;display:flex;gap:8px;align-items:flex-start;"><span>✓</span> Ghi nhận tự động 100%, không sót lượt nào</li>
+              <li style="color:rgba(255,255,255,.65);font-size:.85rem;margin-bottom:8px;display:flex;gap:8px;align-items:flex-start;"><span>✓</span> Báo cáo chi tiết minh bạch mỗi kỳ đối soát</li>
+              <li style="color:rgba(255,255,255,.65);font-size:.85rem;display:flex;gap:8px;align-items:flex-start;"><span>✓</span> Thanh toán đúng ngày 10, không trì hoãn</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT HSA -->
+<section>
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text reveal-left">
+        <div class="tag">✦ Về HSA Education</div>
+        <h2>Hệ thống luyện thi <span class="gold">tiên phong</span> — nền tảng để thầy cô tự tin giới thiệu</h2>
+        <p>HSA Education là đơn vị tiên phong và dẫn đầu ôn luyện ĐGNL, ĐGTD từ năm 2015 — đạt Sao Vàng Thương Hiệu Quốc Gia 2024, Top 10 Thương Hiệu Dẫn Đầu Việt Nam 2025, được VTV3 đưa tin. Thầy cô giới thiệu học sinh đến HSA là giới thiệu đến nơi đáng tin nhất.</p>
+        <ul class="about-list">
+          <li>Tiên phong và duy nhất triển khai đồng bộ giải pháp ĐGNL & ĐGTD tại Việt Nam</li>
+          <li>50.000+ học viên — 1.000+ HS đạt 100+ điểm HSA mỗi năm</li>
+          <li>20 thầy cô tác giả sách NXB — giảng dạy trực tiếp, hỗ trợ tận tâm</li>
+          <li>Hệ thống thi thử mô phỏng đề thật, video bài giảng xem không giới hạn</li>
+          <li>Đội mentors 120+ điểm hỗ trợ học sinh 24/7 trên nhóm riêng</li>
+        </ul>
+      </div>
+      <div class="about-visual reveal-right" style="transition-delay:.1s">
+        <div class="about-stat-card">
+          <div class="n counter" data-target="50000">0</div><span class="n" style="color:var(--navy)">+</span>
+          <div class="l">Học sinh đã tin tưởng học tại HSA</div>
+        </div>
+        <div class="about-stat-card">
+          <div class="n counter" data-target="10">0</div><span class="n" style="color:var(--navy)">+</span>
+          <div class="l">Năm kinh nghiệm luyện thi chuyên sâu</div>
+        </div>
+        <div class="about-stat-card">
+          <div class="n counter" data-target="1000">0</div><span class="n" style="color:var(--navy)">+</span>
+          <div class="l">HS đạt 100+ điểm HSA mỗi năm</div>
+        </div>
+        <div class="about-stat-card featured" style="grid-column:span 1">
+          <div class="n">🥇</div>
+          <div class="l">Sao Vàng Thương Hiệu Quốc Gia 2024 · Top 10 Thương Hiệu Dẫn Đầu 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-bg">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag">✦ Học sinh nói gì về HSA</div>
+      <h2>Kết quả <span class="gold">thực tế</span> từ học sinh HSA</h2>
+      <div class="divider"></div>
+      <p>1.000+ học sinh đạt 100+ điểm mỗi năm — đây là lý do thầy cô hoàn toàn tự tin khi giới thiệu.</p>
+    </div>
+    <div class="testi-grid reveal">
+
+      <!-- 1 -->
+      <div class="testi-card">
+        <div class="testi-head">
+          <div class="testi-avatar">
+            <img src="https://i.ibb.co/hJ3d6NKj/retouch-2026040411330131-Minh-Ngo-c-Va-n.jpg" alt="Văn Thị Minh Ngọc" onerror="this.outerHTML='MN';" />
+          </div>
+          <div>
+            <span class="testi-name">Văn Thị Minh Ngọc</span>
+            <span class="testi-school">Khoá PT01 · THPT Lê Quý Đôn - Hà Đông</span>
+          </div>
+        </div>
+        <div class="testi-score">🏆 HSA: 121/150</div>
+        <div class="testi-breakdown">
+          <span>Định lượng: 35</span><span>Định tính: 43</span><span>KH/TA: 43</span>
+        </div>
+        <p class="testi-text">"Về giáo trình thì em thấy rất chi tiết, hệ thống, dễ hiểu, gần ngày thi còn có ôn tủ, ôn sát đề. Các thầy cô dạy dễ hiểu, có hỏi gì là thầy cô giải đáp hết, các anh chị trợ giảng cũng tận tâm, nhiệt tình. Em thích hệ thống website với sách của trung tâm lắm ạ, em không có nhiều thời gian học online nên cái này gánh em lắm."</p>
+      </div>
+
+      <!-- 2 -->
+      <div class="testi-card">
+        <div class="testi-head">
+          <div class="testi-avatar">
+            <img src="https://i.ibb.co/Q3Sh5cMY/IMG-8950-Trang-Nhung-Luu.jpg" alt="Lưu Thị Trang Nhung" onerror="this.outerHTML='TN';" />
+          </div>
+          <div>
+            <span class="testi-name">Lưu Thị Trang Nhung</span>
+            <span class="testi-school">Khoá PT01 · THPT Chuyên Tuyên Quang</span>
+          </div>
+        </div>
+        <div class="testi-score">🏆 HSA: 118/150</div>
+        <div class="testi-breakdown">
+          <span>Định lượng: 36</span><span>Định tính: 40</span><span>KH/TA: 42</span>
+        </div>
+        <p class="testi-text">"Em thấy thầy, cô dạy chi tiết, kỹ lưỡng nên rất dễ hiểu ạ."</p>
+      </div>
+
+      <!-- 3 -->
+      <div class="testi-card">
+        <div class="testi-head">
+          <div class="testi-avatar">
+            <img src="https://i.ibb.co/bMvYQrmR/669614341-936580792509396-5340221313666476263-n.jpg" alt="An Hải Kim Sơn" onerror="this.outerHTML='KS';" />
+          </div>
+          <div>
+            <span class="testi-name">An Hải Kim Sơn</span>
+            <span class="testi-school">Khoá PT01 · THPT Lê Quý Đôn - Hà Đông</span>
+          </div>
+        </div>
+        <div class="testi-score">🏆 HSA: 120/150</div>
+        <div class="testi-breakdown">
+          <span>Định lượng: 34</span><span>Định tính: 42</span><span>KH/TA: 44</span>
+        </div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Đánh giá 5 sao cho khoá học PT01 — chương trình bài bản, thầy cô tận tâm."</p>
+      </div>
+
+      <!-- 4 -->
+      <div class="testi-card">
+        <div class="testi-head">
+          <div class="testi-avatar">
+            <img src="https://i.ibb.co/Dfb2bcbS/0-E8788-EF-2-F08-4-E63-A7-F2-73-EC89881-D9-E-Phu-o-ng-Nguye-n.jpg" alt="Nguyễn Hà Phương" onerror="this.outerHTML='HP';" />
+          </div>
+          <div>
+            <span class="testi-name">Nguyễn Hà Phương</span>
+            <span class="testi-school">Khoá PT01 · THPT Chuyên Lê Hồng Phong</span>
+          </div>
+        </div>
+        <div class="testi-score">🏆 HSA: 118/150</div>
+        <div class="testi-breakdown">
+          <span>Định lượng: 34</span><span>Định tính: 40</span><span>KH/TA: 44</span>
+        </div>
+        <p class="testi-text">"Thầy cô giảng dạy chất lượng và nhiệt tình ạ."</p>
+      </div>
+
+      <!-- 5 -->
+      <div class="testi-card">
+        <div class="testi-head">
+          <div class="testi-avatar">
+            <img src="https://i.ibb.co/DdVHBf5/df-u-c-An-Tra-n.jpg" alt="Trần Đức An" onerror="this.outerHTML='ĐA';" />
+          </div>
+          <div>
+            <span class="testi-name">Trần Đức An</span>
+            <span class="testi-school">Khoá PT01 · THPT Chuyên Hà Tĩnh</span>
+          </div>
+        </div>
+        <div class="testi-score">🏆 HSA: 116/150</div>
+        <div class="testi-breakdown">
+          <span>Định lượng: 35</span><span>Định tính: 36</span><span>KH/TA: 45</span>
+        </div>
+        <p class="testi-text">"Em thấy rằng các thầy cô rất có tâm, dạy dễ hiểu, tạo cho em cảm giác thoải mái khi học tập. Chương trình bám đề thi."</p>
+      </div>
+
+    </div>
+
+    <!-- Trường top học viên đã đỗ -->
+    <div class="reveal" style="margin-top:36px;text-align:center">
+      <p style="font-size:.82rem;font-weight:700;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:16px;">🎓 Trường top học viên HSA đã đỗ</p>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+        <span style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 18px;font-weight:800;color:var(--navy);font-size:.85rem;">NEU</span>
+        <span style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 18px;font-weight:800;color:var(--navy);font-size:.85rem;">FTU</span>
+        <span style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 18px;font-weight:800;color:var(--navy);font-size:.85rem;">VNU</span>
+        <span style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 18px;font-weight:800;color:var(--navy);font-size:.85rem;">UET</span>
+        <span style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 18px;font-weight:800;color:var(--navy);font-size:.85rem;">HUST</span>
+        <span style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 18px;font-weight:800;color:var(--navy);font-size:.85rem;">TMU</span>
+        <span style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 18px;font-weight:800;color:var(--navy);font-size:.85rem;">HMU</span>
+        <span style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 18px;font-weight:800;color:var(--navy);font-size:.85rem;">HCMUT</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTER FORM -->
+<section class="form-bg" id="register">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag">✦ Đăng ký tham gia</div>
+      <h2 style="color:#fff;">Sẵn sàng trở thành<br><span class="gold">Đại sứ HSA</span>?</h2>
+      <div class="divider"></div>
+      <p>Điền thông tin bên dưới — đội ngũ HSA sẽ liên hệ với thầy cô trong vòng 24 giờ làm việc để hoàn thiện hồ sơ và cấp mã giới thiệu.</p>
+    </div>
+
+    <div class="form-wrap reveal" style="transition-delay:.1s">
+      <form id="ambassadorForm">
+        <div class="form-group">
+          <label>Họ và tên <span class="req">*</span></label>
+          <input type="text" name="fullname" placeholder="Nguyễn Văn A" required />
+        </div>
+        <div class="form-group">
+          <label>Số điện thoại <span class="req">*</span></label>
+          <input type="tel" name="phone" placeholder="0901 234 567" required />
+        </div>
+        <div class="form-group">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" name="email" placeholder="giaovien@email.com" required />
+        </div>
+        <button type="submit" class="submit-btn">
+          🚀 Đăng ký Đại sứ ngay
+        </button>
+        <p class="form-note">🔒 Thông tin của thầy cô được bảo mật tuyệt đối. HSA cam kết không spam hay chia sẻ cho bên thứ ba.</p>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <div class="check">🎉</div>
+        <h4>Đăng ký thành công!</h4>
+        <p>Cảm ơn thầy cô đã tin tưởng tham gia Chương trình Đại sứ HSA.<br>Đội ngũ sẽ liên hệ trong vòng <strong style="color:var(--gold2);">24 giờ làm việc</strong> để xác nhận và cấp mã giới thiệu cá nhân.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="logo-wrap footer-brand">
+        <img src="https://i.ibb.co/n83B0L5t/hsa-logo-png.png" alt="HSA Education" class="logo-img-footer" />
+        <span class="logo-name">HSA Education</span>
+      </div>
+      <div class="footer-links">
+        <a href="#how-it-works">Cách hoạt động</a>
+        <a href="#register">Đăng ký</a>
+        <a href="mailto:info@hsa.edu.vn">Liên hệ</a>
+      </div>
+    </div>
+    <p class="footer-copy">© 2025 HSA Education. Tất cả quyền được bảo lưu.</p>
+  </div>
+</footer>
+
+<!-- FLOATING CTA -->
+<a href="#register" class="float-cta" id="floatCta">
+  Đăng ký Đại sứ <span class="arrow">→</span>
+</a>
+
+<script>
+  // ── SCROLL REVEAL ──
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // ── COUNTER ANIMATION ──
+  function animateCounter(el) {
+    const target = parseInt(el.getAttribute('data-target'));
+    const duration = 1800;
+    const start = performance.now();
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(ease * target).toLocaleString('vi-VN');
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCounter(e.target);
+        counterObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+  // ── FLOATING CTA ──
+  const floatCta = document.getElementById('floatCta');
+  window.addEventListener('scroll', () => {
+    floatCta.classList.toggle('show', window.scrollY > 500);
+  });
+
+  // ── FORM SUBMIT ──
+  document.getElementById('ambassadorForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('.submit-btn');
+    btn.textContent = '⏳ Đang xử lý...';
+    btn.disabled = true;
+    setTimeout(() => {
+      this.style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    }, 1200);
+  });
+
+  // ── SMOOTH SCROLL ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>
